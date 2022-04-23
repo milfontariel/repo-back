@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
+  password String
+  sessions Sessions[]
+
+  @@map("users")
+}
+
+model Categories {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  tests Tests[]
+
+  @@map("categories")
+}
+
+model Teachers {
+  id       Int                   @id @default(autoincrement())
+  name     String                @unique
+  teachers TeachersDisciplines[]
+
+  @@map("teachers")
+}
+
+model Terms {
+  id          Int           @id @default(autoincrement())
+  number      Int           @unique
+  disciplines Disciplines[]
+
+  @@map("terms")
+}
+
+model Disciplines {
+  id       Int                   @id @default(autoincrement())
+  name     String                @unique
+  term     Terms                 @relation(fields: [termId], references: [id])
+  termId   Int
+  teachers TeachersDisciplines[]
+
+  @@map("disciplines")
+}
+
+model TeachersDisciplines {
+  id           Int         @id @default(autoincrement())
+  teacher      Teachers    @relation(fields: [teacherId], references: [id])
+  discipline   Disciplines @relation(fields: [disciplineId], references: [id])
+  teacherId    Int
+  disciplineId Int
+  tests        Tests[]
+
+  @@map("teachersDisciplines")
+}
+
+model Tests {
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  pdfUrl              String
+  category            Categories          @relation(fields: [categoryId], references: [id])
+  categoryId          Int
+  teacherDiscipline   TeachersDisciplines @relation(fields: [teacherDisciplineId], references: [id])
+  teacherDisciplineId Int
+
+  @@map("tests")
+}
+
+model Sessions {
+  id        Int    @id @default(autoincrement())
+  user      Users  @relation(fields: [userEmail], references: [email])
+  userEmail String @unique
+  token     String @unique
+
+  @@map("sessions")
+}
