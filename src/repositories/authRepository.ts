@@ -24,10 +24,17 @@ export async function signUp(email: string, password: string) {
   });
 }
 
-export async function findSession(email: string) {
+export async function findSessionByEmail(email: string) {
   return await client.sessions.findUnique({
     where: {
       userEmail: email,
+    },
+  });
+}
+export async function findSessionByToken(token: string) {
+  return await client.sessions.findUnique({
+    where: {
+      token: token,
     },
   });
 }
@@ -45,6 +52,14 @@ export async function newSession(token: string, userEmail: string) {
     data: {
       token,
       userEmail,
+    },
+  });
+}
+
+export async function closeSession(token: string) {
+  await client.sessions.delete({
+    where: {
+      token: token,
     },
   });
 }
