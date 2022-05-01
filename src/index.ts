@@ -12,7 +12,7 @@ server.use(cors());
 server.use(router);
 server.use(handleError);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => {
   console.log(`Running on port ${PORT}`);
 });
