@@ -5,7 +5,7 @@ const testsSchema = Joi.object({
   pdfUrl: Joi.string().uri().required(),
   categoryId: Joi.number().required(),
   teacherDisciplineId: Joi.number().required(),
-  views: Joi.number().equal(0).required(),
+  views: Joi.number().equal(0),
 });
 
 export default testsSchema;

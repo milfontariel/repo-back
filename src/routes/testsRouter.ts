@@ -3,7 +3,7 @@ import * as testsController from "../controllers/testsController.js";
 
 const testsRouter = Router();
 
-testsRouter.get("/get", testsController.get);
+testsRouter.get("/tests", testsController.get);
 testsRouter.put("/view/:id", testsController.view);
 testsRouter.post("/tests", testsController.post);
 

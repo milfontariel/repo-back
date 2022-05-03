@@ -15,3 +15,11 @@ export async function findByDisciplineId(discipline: number) {
     },
   });
 }
+
+export async function findById(id: number) {
+  return client.teachersDisciplines.findUnique({
+    where: {
+      id: id,
+    },
+  });
+}

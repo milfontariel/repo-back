@@ -1,20 +1,18 @@
-import { Sessions, Users } from "@prisma/client";
 import { Request, Response } from "express";
 import signUpSchema from "../schemas/signUpSchema.js";
 import signInSchema from "../schemas/singInSchema.js";
 import * as authService from "../services/authService.js";
 
-export type SignUpData = {
+export type SignData = {
   email: string;
   password: string;
-  repeatPassword: string;
 };
 
 export async function signUp(req: Request, res: Response) {
-  const { email, password, repeatPassword }: SignUpData = req.body;
+  const { email, password }: SignData = req.body;
 
   const validation = signUpSchema.validate(req.body);
-  if (validation.error || password !== repeatPassword) {
+  if (validation.error) {
     throw {
       type: "invalid_data",
       message: validation.error.details[0].message,
@@ -25,10 +23,8 @@ export async function signUp(req: Request, res: Response) {
   res.sendStatus(201);
 }
 
-export type SignInData = Omit<Users, "id">;
-
 export async function singIn(req: Request, res: Response) {
-  const { email, password }: SignInData = req.body;
+  const { email, password }: SignData = req.body;
   const validation = signInSchema.validate(req.body);
   if (validation.error) {
     throw {

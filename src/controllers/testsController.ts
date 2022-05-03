@@ -32,7 +32,7 @@ export async function view(req: Request, res: Response) {
   }
   await authService.validateToken(token);
   await testsService.view(id);
-  res.sendStatus(201);
+  res.sendStatus(204);
 }
 
 export type PostTest = Omit<Tests, "id">;
@@ -42,7 +42,7 @@ export async function post(req: Request, res: Response) {
   if (!token) {
     throw { type: "unauthorized" };
   }
-
+  await authService.validateToken(token);
   const data: PostTest = req.body;
   const validation = testsSchema.validate(data);
   if (validation.error) {

@@ -30,7 +30,7 @@ export async function signIn(email: string, password: string) {
     }
     return token;
   } else {
-    throw { type: "unauthorized", message: "Usuário e/ou senha incorretos!" };
+    throw { type: "unauthorized", message: "E-mail e/ou senha incorretos!" };
   }
 }
 
@@ -43,7 +43,7 @@ export async function logOut(token: string) {
 }
 
 export async function validateToken(token: string) {
-  const data = jwt.verify(token, process.env.JWT_SECRET);
+  const data = jwt.decode(token);
   if (!data) {
     throw { type: "unauthorized" };
   }

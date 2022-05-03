@@ -7,7 +7,16 @@ export async function post(test: PostTest) {
   });
 }
 
-export async function view(id) {
+export async function verifyTest(id: number) {
+  return await client.tests.findUnique({
+    where: { id: id },
+    select: {
+      views: true,
+    },
+  });
+}
+
+export async function view(id: number) {
   await client.tests.update({
     where: { id: id },
     data: {
